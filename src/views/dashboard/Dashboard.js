@@ -1,15 +1,15 @@
-import React, { lazy } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
 
 import {
-  // CAvatar,
   CButton,
   CButtonGroup,
   CCard,
   CCardBody,
-  // CCardHeader,
   CCol,
-  // CProgress,
   CRow,
+  CFormInput,
   // CTable,
   // CTableBody,
   // CTableDataCell,
@@ -17,155 +17,159 @@ import {
   // CTableHeaderCell,
   // CTableRow,
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle } from '@coreui/utils'
+import moment from 'moment'
+import ChartOne from './Chart/ChartOne'
+import ChartTwo from './Chart/ChartTwo'
+import ChartThree from './Chart/ChartThree'
 
 const Dashboard = () => {
-  const random = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
+  const dispatch = useDispatch()
+  // const [loading, setLoading] = useState(true)
+  const [data, setData] = useState({
+    legend: '',
+    totalCalls: 0,
+    totalUsers: 0,
+    androidCalls: 0,
+    iOSCalls: 0,
+    errorCall: 0,
+    labels: [],
+    rateCall: [],
+    videoFpsDataset: [],
+    videoBitrateDataset: [],
+    audioBitrateDataset: [],
+    audioByteSentDataset: [],
+    videoByteSentDataset: [],
+    audioPacketLostDataset: [],
+    videoPacketLostDataset: [],
+    bandwidthDataset: [],
+    networkDelayDataset: [],
+    audioJitterDataset: [],
+    videoJitterDataset: [],
+  })
+
+  const [period, setPeriod] = useState([])
+
+  useEffect(() => {
+    // setLoading(true)
+    const fetchData = async () => {
+      try {
+        var time = new Date(moment().format('YYYY-MM-DD'))
+        const defaultRange = [+time, +time]
+        const data1 = await axios.get(`
+          http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${defaultRange}]`)
+        const data = data1.data.data
+        setData(data)
+        console.log(data)
+        console.log(data1)
+      } catch (error) {
+        console.log(error)
+        alert('Error')
+      }
+    }
+
+    fetchData()
+  }, [dispatch])
+
+  const onClickApply = async () => {
+    // setLoading(true)
+    const data1 = await axios.get(`
+    http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${period}]`)
+    const data = data1.data.data
+    setData(data)
+    console.log(period)
+    // setLoading(false)
   }
-  const DATA_COUNT = 7
-  const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100}
-  const labels = Utils.months({count: 7}) 
 
   return (
-    <>
-      <CCard className="mb-4">
-        <CCardBody>
-          <CRow>
-            <CCol className="d-none d-md-block">
-              <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
-                  <CButton
-                    color="outline-secondary"
-                    key={value}
-                    className="mx-0"
-                    active={value === 'Month'}
-                  >
-                    {value}
-                  </CButton>
-                ))}
-              </CButtonGroup>
-            </CCol>
-          </CRow>
-          <CChartLine
-            style={{ height: '400px', marginTop: '40px' }}
-            data={{
-              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-              datasets: [
-                {
-                  label: 'My Second dataset',
-                  backgroundColor: 'transparent',
-                  borderColor: getStyle('--cui-success'),
-                  pointHoverBackgroundColor: getStyle('--cui-success'),
-                  borderWidth: 2,
-                  data: [
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                  ],
-                },
-              ],
-            }}
-            options={{
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-              scales: {
-                x: {
-                  grid: {
-                    drawOnChartArea: false,
-                  },
-                },
-                y: {
-                  ticks: {
-                    beginAtZero: true,
-                    maxTicksLimit: 5,
-                    stepSize: Math.ceil(250 / 5),
-                    max: 250,
-                  },
-                },
-              },
-              elements: {
-                line: {
-                  tension: 0.4,
-                },
-                point: {
-                  radius: 0,
-                  hitRadius: 10,
-                  hoverRadius: 4,
-                  hoverBorderWidth: 3,
-                },
-              },
-            }}
-          />
-          <CChartLine
-            style={{ height: '400px', marginTop: '40px' }}
-            data={{
-              labels: labels,
-              datasets: [
-                {
-                  label: 'Dataset 1',
-                  data: Utils.numbers(NUMBER_CFG),
-                  borderColor: Utils.CHART_COLORS.red,
-                  backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-                  yAxisID: 'y',
-                },
-                {
-                  label: 'Dataset 2',
-                  data: Utils.numbers(NUMBER_CFG),
-                  borderColor: Utils.CHART_COLORS.blue,
-                  backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-                  yAxisID: 'y1',
-                },
-              ],
-            }}
-            options={{
-              type: 'line',
-              data: data,
-              options: {
-                responsive: true,
-                interaction: {
-                  mode: 'index',
-                  intersect: false,
-                },
-                stacked: false,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: 'Chart.js Line Chart - Multi Axis',
-                  },
-                },
-                scales: {
-                  y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                  },
-                  y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                      drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
-                  },
-                },
-              },
-            }}
-          />
-        </CCardBody>
-      </CCard>
-    </>
+    <CCard>
+      <CCardBody>
+        <CRow>
+          <CCol sm="6">
+            <h1>Video Call Analytics</h1>
+          </CCol>
+          <CCol className="d-none d-md-block col-sm-2">
+            <h5>Start Date</h5>
+            <CFormInput
+              type="date"
+              value={moment(period[0]).format('YYYY-MM-DD')}
+              onChange={(e) => setPeriod([+moment(e.target.value), period[1]])}
+            />
+          </CCol>
+          <CCol className="d-none d-md-block col-sm-2">
+            <h5>End Date</h5>
+            <CFormInput
+              type="date"
+              value={moment(period[1]).format('YYYY-MM-DD')}
+              onChange={(e) => setPeriod([period[0], +moment(e.target.value)])}
+            />
+          </CCol>
+          <CCol className="d-none d-md-block col-sm-2">
+            <CButtonGroup>
+              <CButton className="m-4" color="info" onClick={() => onClickApply()}>
+                Submit
+              </CButton>
+            </CButtonGroup>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol xs={12} md={6} xl={12}>
+            <CRow>
+              <CCol sm={2}>
+                <div className="border-start border-start-4 border-start-info py-1 px-3">
+                  <div className="text-medium-emphasis small">Total Calls</div>
+                  <div className="fs-5 fw-semibold">{data.totalCall}</div>
+                </div>
+              </CCol>
+              <CCol sm={2}>
+                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                  <div className="text-medium-emphasis small">Total Users</div>
+                  <div className="fs-5 fw-semibold">{data.totalUser}</div>
+                </div>
+              </CCol>
+              <CCol sm={2}>
+                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                  <div className="text-medium-emphasis small">Android Calls</div>
+                  <div className="fs-5 fw-semibold">{data.androidCalls}</div>
+                </div>
+              </CCol>
+              <CCol sm={2}>
+                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                  <div className="text-medium-emphasis small">IOS Calls</div>
+                  <div className="fs-5 fw-semibold">{data.iOSCalls}</div>
+                </div>
+              </CCol>
+              <CCol sm={2}>
+                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                  <div className="text-medium-emphasis small">Error Calls</div>
+                  <div className="fs-5 fw-semibold">{data.errorCall}</div>
+                </div>
+              </CCol>
+            </CRow>
+          </CCol>
+        </CRow>
+        <ChartOne
+          title={'Audio Bit Rate Dataset'}
+          style={{ height: '300px', marginTop: '40px' }}
+          data={data.audioBitrateDataset}
+          labels={data.labels}
+          legend={data.legend}
+        />
+        <ChartTwo
+          title={'Audio Byte Sent Dataset'}
+          style={{ height: '300px', marginTop: '40px' }}
+          data={data.audioByteSentDataset}
+          labels={data.labels}
+          legend={data.legend}
+        />
+        <ChartThree
+          title={'Audio Packet Lost Dataset'}
+          style={{ height: '300px', marginTop: '40px' }}
+          data={data.audioPacketLostDataset}
+          labels={data.labels}
+          legend={data.legend}
+        />
+      </CCardBody>
+    </CCard>
   )
 }
 
