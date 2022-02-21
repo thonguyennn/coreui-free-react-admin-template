@@ -1,17 +1,13 @@
-import { createStore } from 'redux'
+/* eslint-disable prettier/prettier */
+import { createStore, applyMiddleware } from 'redux'
+import thunk from "redux-thunk";
+import reducers from "./reducers";
 
-const initialState = {
-  sidebarShow: true,
-}
+const reduxMiddleware = [thunk];
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
-    default:
-      return state
-  }
-}
 
-const store = createStore(changeState)
+const store = createStore(
+  reducers,
+  applyMiddleware(...reduxMiddleware)
+)
 export default store

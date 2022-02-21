@@ -121,19 +121,19 @@ const Dashboard = () => {
                 </div>
               </CCol>
               <CCol sm={2}>
-                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                <div className="border-start border-start-4 border-start-info py-1 px-3 mb-3">
                   <div className="text-medium-emphasis small">Total Users</div>
                   <div className="fs-5 fw-semibold">{data.totalUser}</div>
                 </div>
               </CCol>
               <CCol sm={2}>
-                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
                   <div className="text-medium-emphasis small">Android Calls</div>
                   <div className="fs-5 fw-semibold">{data.androidCalls}</div>
                 </div>
               </CCol>
               <CCol sm={2}>
-                <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                <div className="border-start border-start-4 border-start-secondary py-1 px-3 mb-3">
                   <div className="text-medium-emphasis small">IOS Calls</div>
                   <div className="fs-5 fw-semibold">{data.iOSCalls}</div>
                 </div>

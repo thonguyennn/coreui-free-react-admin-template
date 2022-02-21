@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect }from 'react'
 import {
-  CAvatar,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
+  CImage,
+  CAvatar,
 } from '@coreui/react'
 import {
   cilArrowThickFromRight,
@@ -32,7 +33,9 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+          <CAvatar
+            src={avatar8} size="md"
+          />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2 text-center">Settings</CDropdownHeader>
@@ -55,3 +58,5 @@ const AppHeaderDropdown = () => {
 }
 
 export default AppHeaderDropdown
+
+//         <CAvatar src={avatar8} size="md" />

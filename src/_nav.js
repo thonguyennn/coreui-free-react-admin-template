@@ -1,6 +1,14 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilNotes, cilSpeedometer } from '@coreui/icons'
+import { 
+  cilSpeedometer, 
+  cilApps, 
+  cilUser, 
+  cilShieldAlt,
+  cilPeople,
+  cilBullhorn
+} from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
 
 const _nav = [
@@ -15,61 +23,58 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Forms',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    name: 'App',
+    to: '/app',
+    icon: <CIcon icon={cilApps} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Form Control',
-        to: '/forms/form-control',
+        name: 'List',
+        to: '/apps/list',
       },
       {
         component: CNavItem,
-        name: 'Select',
-        to: '/forms/select',
-      },
-      {
-        component: CNavItem,
-        name: 'Checks & Radios',
-        to: '/forms/checks-radios',
-      },
-      {
-        component: CNavItem,
-        name: 'Range',
-        to: '/forms/range',
-      },
-      {
-        component: CNavItem,
-        name: 'Input Group',
-        to: '/forms/input-group',
-      },
-      {
-        component: CNavItem,
-        name: 'Floating Labels',
-        to: '/forms/floating-labels',
-      },
-      {
-        component: CNavItem,
-        name: 'Layout',
-        to: '/forms/layout',
-      },
-      {
-        component: CNavItem,
-        name: 'Validation',
-        to: '/forms/validation',
+        name: 'Worker',
+        to: '/apps/worker',
       },
     ],
   },
-  // {
-  //   _tag: 'CSidebarNavItem',
-  //   name: 'Test',
-  //   to: '/test',
-  //   icon: <CIcon name="cil-graph" customClasses="c-sidebar-nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   },
-  //   isneedperm: 0,
-  // },
+  {
+    component: CNavItem,
+    name: 'User',
+    to: '/users',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: 'Role',
+    to: '/roles',
+    icon: <CIcon icon={cilShieldAlt} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: 'Permission',
+    to: '/permissions',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: 'Action',
+    to: '/actions',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
 ]
 
 export default _nav

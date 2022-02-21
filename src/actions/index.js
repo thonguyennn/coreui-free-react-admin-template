@@ -322,6 +322,7 @@ export const getListAction = _ => async dispatch => {
       list
     })
   } catch (error) {
+    alert('Can list an action')
     const res = error.response;
     const status = res.status;
     const { message } = res.data;

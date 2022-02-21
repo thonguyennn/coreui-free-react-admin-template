@@ -7,15 +7,24 @@ const CreateAction = React.lazy(() => import('./views/actions/CreateAction'))
 const Actions = React.lazy(() => import('./views/actions/Actions'))
 const Action = React.lazy(() => import('./views/actions/Action'))
 
+const Role = React.lazy(() => import('./views/roles/Role'));
+const Roles = React.lazy(() => import('./views/roles/Roles'));
+const CreateRole = React.lazy(() => import('./views/roles/Create'));
+
+const Apps = React.lazy(() => import('./views/apps/Apps'));
+const App = React.lazy(() => import('./views/apps/App'));
+const WokerTimer = React.lazy(() => import('./views/apps/Timer'));
+const ListWoker = React.lazy(() => import('./views/apps/Workers'));
+
+const Users = React.lazy(() => import('./views/users/Users'));
+const User = React.lazy(() => import('./views/users/User'));
+
+const Processes = React.lazy(() => import('./views/processes/Processes'));
+
+
 //Forms
-const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
-const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'))
 const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
-const InputGroup = React.lazy(() => import('./views/forms/input-group/InputGroup'))
-const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
-const Range = React.lazy(() => import('./views/forms/range/Range'))
 const Select = React.lazy(() => import('./views/forms/select/Select'))
-const Validation = React.lazy(() => import('./views/forms/validation/Validation'))
 
 const Test = React.lazy(() => import('./views/test/Test'))
 
@@ -27,15 +36,23 @@ const routes = [
   { path: '/actions/:id', exact: true, name: 'Details', component: Action },
   { path: '/actions', exact: true, name: 'Actions', component: Actions },
 
+  { path: '/roles/create', exact: true, name: 'Create', component: CreateRole },
+  { path: '/roles/:id', exact: true, name: 'Details', component: Role },
+  { path: '/roles', exact: true, name: 'Roles', component: Roles },
+
+  { path: '/apps/list/:id/workers', exact: true, name: 'Wokers', component: ListWoker },
+  { path: '/apps/worker', exact: true, name: 'Add Woker', component: WokerTimer },
+  { path: '/apps/list/:id', exact: true, name: 'Details', component: App },
+  { path: '/apps/list', exact: true, name: 'Apps', component: Apps },
+
+  { path: '/users/:id', exact: true, name: 'Details', component: User },
+  { path: '/users', exact: true, name: 'Users', component: Users },
+
+  { path: '/processes', exact: true, name: 'Processes', component: Processes },
+
   { path: '/forms', name: 'Forms', component: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', component: FormControl },
   { path: '/forms/select', name: 'Select', component: Select },
-  { path: '/forms/checks-radios', name: 'Checks & Radios', component: ChecksRadios },
-  { path: '/forms/range', name: 'Range', component: Range },
-  { path: '/forms/input-group', name: 'Input Group', component: InputGroup },
-  { path: '/forms/floating-labels', name: 'Floating Labels', component: FloatingLabels },
-  { path: '/forms/layout', name: 'Layout', component: Layout },
-  { path: '/forms/validation', name: 'Validation', component: Validation },
 
   { path: '/test', exact: true, name: 'Test', component: Test },
 ]

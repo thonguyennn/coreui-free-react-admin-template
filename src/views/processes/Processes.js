@@ -9,11 +9,11 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CDataTable,
   CRow,
   CPagination,
   CBadge
 } from '@coreui/react'
+import { CSmartTable } from '@coreui/react-pro'
 import CIcon from '@coreui/icons-react'
 import { useDispatch } from "react-redux";
 import {
@@ -118,7 +118,7 @@ const Processes = () => {
             >Restart All</CButton>
           </CCardHeader>
           <CCardBody>
-            <CDataTable
+            <CSmartTable
               itemsPerPage={size}
               activePage={page}
               itemsPerPageSelect
