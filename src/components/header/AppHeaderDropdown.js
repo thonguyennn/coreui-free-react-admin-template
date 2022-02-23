@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect }from 'react'
+import React, { useEffect } from 'react'
 import {
   CDropdown,
   CDropdownDivider,
@@ -16,16 +16,21 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { useDispatch, useSelector } from "react-redux";
-import { logout, getMe } from '../../actions'
+import { useDispatch, 
+  useSelector 
+} from "react-redux";
+import {
+  logout,
+  getMe 
+} from '../../actions'
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
   const me = useSelector(state => state.me);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getMe())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getMe())
+  }, [dispatch])
   const handleLogOut = (e) => {
     e.preventDefault();
     dispatch(logout());
@@ -33,9 +38,14 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-          <CAvatar
-            src={avatar8} size="md"
+      {/* <div className="c-avatar">
+          <CImage
+            src={`${me.avatar || 'avatars/6.jpg'}`}
+            className="c-avatar-img"
+            alt={`${me.email || 'alt@email.com'}`}
           />
+      </div> */}
+      <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2 text-center">Settings</CDropdownHeader>

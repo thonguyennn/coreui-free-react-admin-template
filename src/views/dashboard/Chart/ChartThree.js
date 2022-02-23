@@ -2,7 +2,6 @@
 import React from 'react'
 import { CChartLine } from '@coreui/react-chartjs'
 
-const receivedLine = '#0000ff'
 
 const xLegend = {
   s: 'Seconds',
@@ -11,14 +10,14 @@ const xLegend = {
   d: 'Days',
 }
 // eslint-disable-next-line react/prop-types
-const ChartThree = ({ style, title, labels, legend, data }) => {
+const ChartThree = ({ style, title, labels, legend, data, color }) => {
   const datasets = (() => {
     return [
       {
         label: title,
         backgroundColor: 'transparent',
-        borderColor: receivedLine,
-        pointHoverBackgroundColor: receivedLine,
+        borderColor: color,
+        pointHoverBackgroundColor: color,
         borderWidth: 2,
         data: data,
       },
@@ -84,6 +83,7 @@ const ChartThree = ({ style, title, labels, legend, data }) => {
   return (
     <CChartLine
       style={style}
+      color={color}
       data={{
         labels: labels,
         datasets,

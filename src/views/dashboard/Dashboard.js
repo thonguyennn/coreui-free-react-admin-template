@@ -1,6 +1,16 @@
+/* eslint-disable no-labels */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-labels */
+/* eslint-disable no-label-var */
+/* eslint-disable react/display-name */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable react/jsx-no-duplicate-props */
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react'
+import { forwardRef } from 'react';
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+// import { AddBox, ArrowDownward } from "@material-ui/icons";
 
 import {
   CButton,
@@ -10,21 +20,32 @@ import {
   CCol,
   CRow,
   CFormInput,
+  CSpinner,
   // CTable,
-  // CTableBody,
-  // CTableDataCell,
-  // CTableHead,
-  // CTableHeaderCell,
-  // CTableRow,
 } from '@coreui/react'
+
 import moment from 'moment'
+import MaterialTable from 'material-table'
+
 import ChartOne from './Chart/ChartOne'
 import ChartTwo from './Chart/ChartTwo'
 import ChartThree from './Chart/ChartThree'
+// import TableOne from './Table/TableOne'
+import Edit from '@material-ui/icons/Edit';
 
 const Dashboard = () => {
+  
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />)
+
   const dispatch = useDispatch()
-  // const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
+
+  // get date
+  const [period, setPeriod] = useState([])
+  var time = moment(moment().format('YYYY-MM-DD'))
+  const defaultRange = [+time, +time]
+
+  // get data to chart 
   const [data, setData] = useState({
     legend: '',
     totalCalls: 0,
@@ -46,40 +67,88 @@ const Dashboard = () => {
     audioJitterDataset: [],
     videoJitterDataset: [],
   })
-
-  const [period, setPeriod] = useState([])
-
   useEffect(() => {
-    // setLoading(true)
+    setPeriod(defaultRange)
+    setLoading(true)
     const fetchData = async () => {
       try {
-        var time = new Date(moment().format('YYYY-MM-DD'))
-        const defaultRange = [+time, +time]
-        const data1 = await axios.get(`
+        // data chart
+        const dataChart = await axios.get(`
           http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${defaultRange}]`)
-        const data = data1.data.data
+        const data = dataChart.data.data
+        //render data when loading finish
         setData(data)
-        console.log(data)
-        console.log(data1)
       } catch (error) {
-        console.log(error)
         alert('Error')
       }
     }
-
     fetchData()
   }, [dispatch])
 
+  // get data to table bot
+  const [dataBot, setDataBot] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const data2 = await axios(`http://10.5.46.132:5000/statistic/botaudiojitter?rangeTime=[${defaultRange}]`)
+      var dataT = data2.data.data
+      setDataBot(dataT)
+    }
+    fetchData()
+  }, [setDataBot])
+
+  // get data to table top
+  const [dataTop, setDataTop] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const data2 = await axios(`http://10.5.46.132:5000/statistic/topaudiojitter?rangeTime=[${defaultRange}]`)
+      var dataT = data2.data.data
+      setDataTop(dataT)
+    }
+    fetchData()
+  }, [setDataTop])
+
+  const columns = [
+    {
+      title:'ID',
+      field:'_id'
+    },
+    {
+      title:'Jitter',
+      field:'sumAudioJitter'
+    },
+  ]
+  
+  // handle when click 
   const onClickApply = async () => {
-    // setLoading(true)
+    setLoading(true)
+    // data chart
     const data1 = await axios.get(`
     http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${period}]`)
     const data = data1.data.data
-    setData(data)
-    console.log(period)
-    // setLoading(false)
-  }
 
+    //data table bot
+    const dataBot = await axios.get(`http://10.5.46.132:5000/statistic/botaudiojitter?rangeTime=[${period}]`)
+    const dataBotTable = dataBot.data.data
+
+    //data table top
+    const dataTop = await axios.get(`http://10.5.46.132:5000/statistic/topaudiojitter?rangeTime=[${period}]`)
+    const dataTopTable = dataTop.data.data
+
+    // render data when click 
+    setData(data)
+    setDataBot(dataBotTable)
+    setDataTop(dataTopTable)
+    setLoading(false)
+  }
+  if (loading) {
+    <CSpinner
+      style={{
+        width: '2rem', height: '2rem',
+      }}
+      color="primary"
+      variant="grow"
+    />
+  }
   return (
     <CCard>
       <CCardBody>
@@ -153,6 +222,7 @@ const Dashboard = () => {
           data={data.audioBitrateDataset}
           labels={data.labels}
           legend={data.legend}
+          color={'#4dbd74'}
         />
         <ChartTwo
           title={'Audio Byte Sent Dataset'}
@@ -160,6 +230,7 @@ const Dashboard = () => {
           data={data.audioByteSentDataset}
           labels={data.labels}
           legend={data.legend}
+          color={'#0384fc'}
         />
         <ChartThree
           title={'Audio Packet Lost Dataset'}
@@ -167,7 +238,48 @@ const Dashboard = () => {
           data={data.audioPacketLostDataset}
           labels={data.labels}
           legend={data.legend}
+          color={'#fc0303'}
         />
+        <CRow>
+          <CCol xs={6}>
+           <MaterialTable title="Five Worst Audio Jitter "
+            data={dataBot}
+            columns={columns}
+            options={{
+              search: false,
+              paging: false,
+              actionsColumnIndex: -1
+            }}
+            actions={[
+              {
+                icon: () => <Edit />,
+                tooltip: 'View',
+                onClick: () => window.location.href = 'http://localhost:3000/'
+              }
+            ]}
+           >
+           </MaterialTable>
+          </CCol>
+          <CCol xs={6}>
+           <MaterialTable title="Five Best Audio Jitter"
+            data={dataTop}
+            columns={columns}
+            options={{
+              search: false,
+              paging: false,
+              actionsColumnIndex: -1
+            }}
+            actions={[
+              {
+                icon: () => <Edit />,
+                tooltip: 'View',
+                onClick: () => window.location.href = 'http://localhost:3000/'
+              }
+            ]}
+           >
+           </MaterialTable>
+          </CCol>
+        </CRow>
       </CCardBody>
     </CCard>
   )

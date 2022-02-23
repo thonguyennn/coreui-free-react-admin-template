@@ -92,6 +92,7 @@ export const logout = _ => async dispatch => {
   dispatch({
     type: LOGOUT_REQUEST,
   })
+  console.log('log out')
 }
 
 export const getMe = _ => async dispatch => {
@@ -112,15 +113,15 @@ export const getMe = _ => async dispatch => {
       ...me
     })
   } catch (error) {
-    const res = error.response;
-    const status = res.status;
-    const { message } = res.data
+    // const res = error.response;
+    // const status = res.status;
+    // const { message } = res.data
     setAuthHeader()
     localStorage.removeItem("accessToken");
     dispatch({
       type: AUTH_FAILED,
     })
-    return dispatch(addToast({ status, message }))
+    // return dispatch(addToast({ status, message }))
   }
 }
 
