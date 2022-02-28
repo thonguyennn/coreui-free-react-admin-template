@@ -11,7 +11,7 @@ import {
   cilBullhorn
 } from '@coreui/icons'
 import { 
-  // CNavGroup, 
+  CNavGroup, 
   CNavItem 
 } from '@coreui/react'
 
@@ -25,24 +25,24 @@ const _nav = [
       color: 'info',
     },
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'App',
-  //   to: '/app',
-  //   icon: <CIcon icon={cilApps} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'List',
-  //       to: '/apps/list',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Worker',
-  //       to: '/apps/worker',
-  //     },
-  //   ],
-  // },
+  {
+    component: CNavGroup,
+    name: 'App',
+    to: '/app',
+    icon: <CIcon icon={cilApps} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'List',
+        to: '/apps/list',
+      },
+      {
+        component: CNavItem,
+        name: 'Worker',
+        to: '/apps/worker',
+      },
+    ],
+  },
   {
     component: CNavItem,
     name: 'User',

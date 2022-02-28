@@ -92,6 +92,7 @@ export const logout = _ => async dispatch => {
   dispatch({
     type: LOGOUT_REQUEST,
   })
+  // window.location.href = `${process.env.REACT_APP_API_HOST}/login`
   console.log('log out')
 }
 

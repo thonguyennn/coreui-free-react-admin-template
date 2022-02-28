@@ -41,7 +41,7 @@ const ChartOne = ({ style, title, labels, legend, data, color}) => {
                 label += ': '
               }
               if (context.parsed.y !== null) {
-                label += context.parsed.y + 'Bit'
+                label += context.parsed.y + ''
               }
               return label
             },
@@ -64,14 +64,14 @@ const ChartOne = ({ style, title, labels, legend, data, color}) => {
           display: true,
           title: {
             display: true,
-            text: 'Bit',
+            text: 'Call',
           },
           beginAtZero: true,
         },
       },
       elements: {
         line: {
-          tension: 0.4,
+          tension: 0,
         },
         point: {
           radius: 0,

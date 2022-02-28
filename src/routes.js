@@ -22,10 +22,6 @@ const User = React.lazy(() => import('./views/users/User'));
 const Processes = React.lazy(() => import('./views/processes/Processes'));
 
 
-//Forms
-const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
-const Select = React.lazy(() => import('./views/forms/select/Select'))
-
 const Test = React.lazy(() => import('./views/test/Test'))
 
 const routes = [
@@ -49,10 +45,6 @@ const routes = [
   { path: '/users', exact: true, name: 'Users', component: Users },
 
   { path: '/processes', exact: true, name: 'Processes', component: Processes },
-
-  { path: '/forms', name: 'Forms', component: FormControl, exact: true },
-  { path: '/forms/form-control', name: 'Form Control', component: FormControl },
-  { path: '/forms/select', name: 'Select', component: Select },
 
   { path: '/test', exact: true, name: 'Test', component: Test },
 ]

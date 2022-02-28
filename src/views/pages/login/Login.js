@@ -3,7 +3,7 @@ import React from 'react'
 import {
   CButton,
   CContainer,
-  CRow
+  CRow,
 } from '@coreui/react'
 import { Redirect, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,16 +26,15 @@ const Login = () => {
     :
     (
       <div className="c-app c-default-layout flex-row align-items-center">
-
         <CContainer>
           <CRow className="justify-content-center">
             <CButton
               color="primary"
               className="px-4"
-              href={`${process.env.REACT_APP_API_HOST}/callback`}
+              href={`${process.env.REACT_APP_API_HOST}/auth/callback`}
             >
               Login With VietID
-          </CButton>
+            </CButton>
           </CRow>
         </CContainer>
       </div>

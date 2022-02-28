@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react'
 import { forwardRef } from 'react';
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom';
 // import { AddBox, ArrowDownward } from "@material-ui/icons";
 
 import {
@@ -23,18 +24,17 @@ import {
   CSpinner,
   // CTable,
 } from '@coreui/react'
-
 import moment from 'moment'
-import MaterialTable from 'material-table'
+import MaterialTable from 'material-table' 
 
 import ChartOne from './Chart/ChartOne'
 import ChartTwo from './Chart/ChartTwo'
 import ChartThree from './Chart/ChartThree'
-// import TableOne from './Table/TableOne'
+import ChartPie  from './ChartPie/ChartPie';
 import Edit from '@material-ui/icons/Edit';
 
 const Dashboard = () => {
-  
+  const history = useHistory();
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />)
 
   const dispatch = useDispatch()
@@ -54,6 +54,10 @@ const Dashboard = () => {
     iOSCalls: 0,
     errorCall: 0,
     labels: [],
+    carriers: [],
+    errors: [],
+    callDataset: [], 
+    userDataset: [], 
     rateCall: [],
     videoFpsDataset: [],
     videoBitrateDataset: [],
@@ -73,10 +77,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         // data chart
-        const dataChart = await axios.get(`
-          http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${defaultRange}]`)
+        const dataChart = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/qoscall?rangeTime=[${defaultRange}]`)
         const data = dataChart.data.data
-        //render data when loading finish
         setData(data)
       } catch (error) {
         alert('Error')
@@ -89,8 +91,9 @@ const Dashboard = () => {
   const [dataBot, setDataBot] = useState([])
   useEffect(() => {
     const fetchData = async () => {
-      const data2 = await axios(`http://10.5.46.132:5000/statistic/botaudiojitter?rangeTime=[${defaultRange}]`)
+      const data2 = await axios(`${process.env.REACT_APP_API_HOST}/statistic/botaudiojitter?rangeTime=[${defaultRange}]`)
       var dataT = data2.data.data
+      // console.log(dataT.map((dataB) => dataB._id))
       setDataBot(dataT)
     }
     fetchData()
@@ -100,7 +103,7 @@ const Dashboard = () => {
   const [dataTop, setDataTop] = useState([])
   useEffect(() => {
     const fetchData = async () => {
-      const data2 = await axios(`http://10.5.46.132:5000/statistic/topaudiojitter?rangeTime=[${defaultRange}]`)
+      const data2 = await axios(`${process.env.REACT_APP_API_HOST}/statistic/topaudiojitter?rangeTime=[${defaultRange}]`)
       var dataT = data2.data.data
       setDataTop(dataT)
     }
@@ -117,21 +120,19 @@ const Dashboard = () => {
       field:'sumAudioJitter'
     },
   ]
-  
   // handle when click 
   const onClickApply = async () => {
     setLoading(true)
     // data chart
-    const data1 = await axios.get(`
-    http://10.5.46.132:5000/statistic/qoscall?rangeTime=[${period}]`)
+    const data1 = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/qoscall?rangeTime=[${period}]`)
     const data = data1.data.data
 
     //data table bot
-    const dataBot = await axios.get(`http://10.5.46.132:5000/statistic/botaudiojitter?rangeTime=[${period}]`)
+    const dataBot = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/botaudiojitter?rangeTime=[${period}]`)
     const dataBotTable = dataBot.data.data
 
     //data table top
-    const dataTop = await axios.get(`http://10.5.46.132:5000/statistic/topaudiojitter?rangeTime=[${period}]`)
+    const dataTop = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/topaudiojitter?rangeTime=[${period}]`)
     const dataTopTable = dataTop.data.data
 
     // render data when click 
@@ -139,6 +140,11 @@ const Dashboard = () => {
     setDataBot(dataBotTable)
     setDataTop(dataTopTable)
     setLoading(false)
+  }
+
+  const handleClick = (e, rowData) => {
+    console.log(rowData._id)
+    // history.push('/')
   }
   if (loading) {
     <CSpinner
@@ -216,31 +222,61 @@ const Dashboard = () => {
             </CRow>
           </CCol>
         </CRow>
-        <ChartOne
-          title={'Audio Bit Rate Dataset'}
-          style={{ height: '300px', marginTop: '40px' }}
-          data={data.audioBitrateDataset}
-          labels={data.labels}
-          legend={data.legend}
-          color={'#4dbd74'}
-        />
-        <ChartTwo
-          title={'Audio Byte Sent Dataset'}
-          style={{ height: '300px', marginTop: '40px' }}
-          data={data.audioByteSentDataset}
-          labels={data.labels}
-          legend={data.legend}
-          color={'#0384fc'}
-        />
-        <ChartThree
-          title={'Audio Packet Lost Dataset'}
-          style={{ height: '300px', marginTop: '40px' }}
-          data={data.audioPacketLostDataset}
-          labels={data.labels}
-          legend={data.legend}
-          color={'#fc0303'}
-        />
         <CRow>
+          <h3 className='mt-5'>Total Call</h3>
+          <CCol xs={12}>
+            <ChartOne
+              title={'Total Call'}
+              style={{ height: '300px', marginTop: '40px' }}
+              data={data.callDataset}
+              labels={data.labels}
+              legend={data.legend}
+              color={'#4dbd74'}
+            />
+          </CCol>
+          <h3 className='mt-5'>Total User Call</h3>
+          <CCol xs={12}>
+            <ChartTwo
+              title={'Total User Call'}
+              style={{ height: '300px', marginTop: '40px' }}
+              data={data.userDataset}
+              labels={data.labels}
+              legend={data.legend}
+              color={'#0384fc'}
+            />
+          </CCol>
+          <h3 className='mt-5'>Audio Packet Lost Dataset</h3>
+          <CCol xs={12}>
+            <ChartThree
+              title={'Audio Packet Lost Dataset'}
+              style={{ height: '300px', marginTop: '40px' }}
+              data={data.audioPacketLostDataset}
+              labels={data.labels}
+              legend={data.legend}
+              color={'#fc0303'}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mt-4 align-self-center">
+          <CCol xs={12} className="align-self-center">
+            <h3 className='mt-5 mb-5'>Total Calls Of Carriers</h3>
+          </CCol>
+          <CCol xs={6}>
+            <ChartPie
+            data={data.carriers.map((dataC) => dataC.count)}
+            labels={data.carriers.map((dataL) => dataL.carrier)}
+            title="Carriers Chart"
+          />
+          </CCol>
+          <CCol xs={6}>
+            <ChartPie
+            data={data.errors.map((dataC) => dataC.count)}
+            labels={data.errors.map((dataL) => dataL.error)}
+            title="Error Chart"
+            />
+          </CCol>
+        </CRow>
+        <CRow className='mt-5 mb-5'>
           <CCol xs={6}>
            <MaterialTable title="Five Worst Audio Jitter "
             data={dataBot}
@@ -248,13 +284,15 @@ const Dashboard = () => {
             options={{
               search: false,
               paging: false,
-              actionsColumnIndex: -1
+              actionsColumnIndex: -1,
+              sorting: false,
+              headerStyle:{background: "#c5c9d1"},
             }}
             actions={[
               {
                 icon: () => <Edit />,
                 tooltip: 'View',
-                onClick: () => window.location.href = 'http://localhost:3000/'
+                onClick: (e, rowData) => handleClick(e, rowData)
               }
             ]}
            >
@@ -267,13 +305,15 @@ const Dashboard = () => {
             options={{
               search: false,
               paging: false,
-              actionsColumnIndex: -1
+              actionsColumnIndex: -1,
+              sorting: false,
+              headerStyle:{background: "#c5c9d1"},
             }}
             actions={[
               {
                 icon: () => <Edit />,
                 tooltip: 'View',
-                onClick: () => window.location.href = 'http://localhost:3000/'
+                onClick: (e, rowData) => handleClick(e, rowData)
               }
             ]}
            >

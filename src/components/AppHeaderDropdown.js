@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable prettier/prettier */
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom';
 import {
   CDropdown,
   CDropdownDivider,
@@ -7,7 +9,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImage,
+  // CImage,
   CAvatar,
 } from '@coreui/react'
 import {
@@ -17,24 +19,21 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useDispatch, 
-  useSelector 
+  // useSelector 
 } from "react-redux";
 import {
-  logout,
+  // logout,
   getMe 
-} from '../../actions'
-import avatar8 from './../../assets/images/avatars/8.jpg'
+} from '../actions'
+import avatar8 from '../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
-  const me = useSelector(state => state.me);
+  const history = useHistory();
+  // const me = useSelector(state => state.me);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMe())
   }, [dispatch])
-  const handleLogOut = (e) => {
-    e.preventDefault();
-    dispatch(logout());
-  }
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -58,7 +57,7 @@ const AppHeaderDropdown = () => {
           Settings
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem onClick={handleLogOut}>
+        <CDropdownItem onClick={()=> history.push(`/login`)}>
           <CIcon icon={cilArrowThickFromRight} className="me-2" />
           Log Out
         </CDropdownItem>

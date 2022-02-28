@@ -39,7 +39,7 @@ const ChartTwo = ({ style, title, labels, legend, data, color}) => {
                 label += ': '
               }
               if (context.parsed.y !== null) {
-                label += context.parsed.y + 'Byte'
+                label += context.parsed.y + ''
               }
               return label
             },
@@ -62,14 +62,14 @@ const ChartTwo = ({ style, title, labels, legend, data, color}) => {
           display: true,
           title: {
             display: true,
-            text: 'Byte',
+            text: 'User Call',
           },
           beginAtZero: true,
         },
       },
       elements: {
         line: {
-          tension: 0.4,
+          tension: 0,
         },
         point: {
           radius: 0,

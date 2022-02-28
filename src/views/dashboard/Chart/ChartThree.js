@@ -69,7 +69,7 @@ const ChartThree = ({ style, title, labels, legend, data, color }) => {
       },
       elements: {
         line: {
-          tension: 0.4,
+          tension: 0,
         },
         point: {
           radius: 0,
