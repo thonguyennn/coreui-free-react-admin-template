@@ -44,7 +44,7 @@ import setAuthHeader from '../utils/setAuthHeader'
 
 export const login = ({ accessToken }) => async dispatch => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_API_HOST}/login`, {
+    const res = await axios.post(`${process.env.REACT_APP_API_HOST}/auth/login`, {
       accessToken
     });
     localStorage.setItem("accessToken", res.data.accessToken);
@@ -92,22 +92,21 @@ export const logout = _ => async dispatch => {
   dispatch({
     type: LOGOUT_REQUEST,
   })
-  // window.location.href = `${process.env.REACT_APP_API_HOST}/login`
   console.log('log out')
 }
 
 export const getMe = _ => async dispatch => {
   try {
-    // const accessToken = localStorage.getItem("accessToken");
-    // const { exp } = jwt_decode(accessToken);
-    // if (exp < (new Date().getTime() + 1) / 1000) {
-    //   setAuthHeader()
-    //   localStorage.removeItem("accessToken");
-    //   dispatch({
-    //     type: AUTH_FAILED,
-    //   });
-    // }
-    const res = await axios.get(`${process.env.REACT_APP_API_HOST}/me`)
+    const accessToken = localStorage.getItem("accessToken");
+    const { exp } = jwt_decode(accessToken);
+    if (exp < (new Date().getTime() + 1) / 1000) {
+      setAuthHeader()
+      localStorage.removeItem("accessToken");
+      dispatch({
+        type: AUTH_FAILED,
+      });
+    }
+    const res = await axios.get(`${process.env.REACT_APP_API_HOST}/auth/me`)
     const { data: me } = res.data;
     return dispatch({
       type: GET_ME,

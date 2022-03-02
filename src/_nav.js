@@ -52,33 +52,33 @@ const _nav = [
       color: 'info',
     },
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Role',
-  //   to: '/roles',
-  //   icon: <CIcon icon={cilShieldAlt} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   },
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Permission',
-  //   to: '/permissions',
-  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   },
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Action',
-  //   to: '/actions',
-  //   icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   },
-  // },
+  {
+    component: CNavItem,
+    name: 'Role',
+    to: '/roles',
+    icon: <CIcon icon={cilShieldAlt} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: 'Permission',
+    to: '/permissions',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: 'Action',
+    to: '/actions',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
 ]
 
 export default _nav

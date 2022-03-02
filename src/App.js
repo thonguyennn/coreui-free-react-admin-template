@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import './scss/style.scss'
 
+import  RequireAuth  from './components/RequireAuth'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -24,6 +26,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 class App extends Component {
+  
   render() {
     return (
       <HashRouter>
@@ -35,7 +38,9 @@ class App extends Component {
             <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
             <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
             <Route exact path="/viewCall" name="ViewCall Page" render={(props) => <ViewCall {...props} />} />
-            <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            <RequireAuth path="/">
+              <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            </RequireAuth>
           </Switch>
         </React.Suspense>
       </HashRouter>

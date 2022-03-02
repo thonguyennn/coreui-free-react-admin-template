@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import { shallow } from 'enzyme/build'
 import App from './App'

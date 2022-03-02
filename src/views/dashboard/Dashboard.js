@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-labels */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-labels */
@@ -11,7 +12,6 @@ import { forwardRef } from 'react';
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom';
-// import { AddBox, ArrowDownward } from "@material-ui/icons";
 
 import {
   CButton,
@@ -32,6 +32,8 @@ import ChartTwo from './Chart/ChartTwo'
 import ChartThree from './Chart/ChartThree'
 import ChartPie  from './ChartPie/ChartPie';
 import Edit from '@material-ui/icons/Edit';
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 const Dashboard = () => {
   const history = useHistory();
@@ -93,7 +95,6 @@ const Dashboard = () => {
     const fetchData = async () => {
       const data2 = await axios(`${process.env.REACT_APP_API_HOST}/statistic/botaudiojitter?rangeTime=[${defaultRange}]`)
       var dataT = data2.data.data
-      // console.log(dataT.map((dataB) => dataB._id))
       setDataBot(dataT)
     }
     fetchData()
@@ -124,8 +125,8 @@ const Dashboard = () => {
   const onClickApply = async () => {
     setLoading(true)
     // data chart
-    const data1 = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/qoscall?rangeTime=[${period}]`)
-    const data = data1.data.data
+    const dataChart = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/qoscall?rangeTime=[${period}]`)
+    const data = dataChart.data.data
 
     //data table bot
     const dataBot = await axios.get(`${process.env.REACT_APP_API_HOST}/statistic/botaudiojitter?rangeTime=[${period}]`)
@@ -141,10 +142,26 @@ const Dashboard = () => {
     setDataTop(dataTopTable)
     setLoading(false)
   }
-
+  // const options = {
+  //   tooltip: {
+  //     enabled: false
+  //   },
+  //   plugins: {
+  //     datalabels: {
+  //       display: function(context) {
+  //         var dataset = context.dataset;
+  //         var count = dataset.data.length;
+  //         var value = dataset.data[context.dataIndex];
+  //         console.log(context)
+  //         return value > count * 1.5;
+  //       },
+  //     }
+  //   },
+  // };
+  // handle click table data
   const handleClick = (e, rowData) => {
     console.log(rowData._id)
-    // history.push('/')
+    history.push(`/viewCall/${rowData._id}`)
   }
   if (loading) {
     <CSpinner
@@ -259,13 +276,14 @@ const Dashboard = () => {
         </CRow>
         <CRow className="mt-4 align-self-center">
           <CCol xs={12} className="align-self-center">
-            <h3 className='mt-5 mb-5'>Total Calls Of Carriers</h3>
+            <h3 className='mt-5 mb-5'>Carriers and Error Chart</h3>
           </CCol>
           <CCol xs={6}>
             <ChartPie
             data={data.carriers.map((dataC) => dataC.count)}
             labels={data.carriers.map((dataL) => dataL.carrier)}
             title="Carriers Chart"
+            // options={options}
           />
           </CCol>
           <CCol xs={6}>
@@ -273,6 +291,7 @@ const Dashboard = () => {
             data={data.errors.map((dataC) => dataC.count)}
             labels={data.errors.map((dataL) => dataL.error)}
             title="Error Chart"
+            // options={options}
             />
           </CCol>
         </CRow>

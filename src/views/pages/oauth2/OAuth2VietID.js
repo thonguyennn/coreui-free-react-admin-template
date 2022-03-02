@@ -1,20 +1,41 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import React, { useEffect } from 'react'
 import { Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../../actions'
+import { useDispatch } from 'react-redux';
+// import { login } from '../../../actions'
+import useAuth from 'src/hooks/useAuth';
+
+function useQuery() {
+    const { search } = useLocation();
+  
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
 
 const OAuth2VietId = () => {
+    let query = useQuery();
+    const { auth, setAuth } = useAuth()
     const dispatch = useDispatch()
-    const search = useLocation().search
-    const authState = useSelector(state => state.auth)
-    const accessToken = new URLSearchParams(search).get('accessToken')
+    const token = query.get('accessToken')
+    // console.log(token)
+    // if (token) {
+    //     console.log("get token successful")
+    // }
     useEffect(() => {
-        dispatch(login({ accessToken }))
-    }, [accessToken, dispatch]);
+        const fetchAuth = async () => {
+            try {
+                // const { data } = await authActions.login(token)
+                // const { accessToken } = data
+                setAuth({ accessToken: token })
+                localStorage.setItem('accessToken', token)
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
+        fetchAuth()
+    }, [token, dispatch]);
 
-
-    return authState.isAuthenticated ?
+    return auth.accessToken ?
         <Redirect
             to={{
                 pathname: "/",

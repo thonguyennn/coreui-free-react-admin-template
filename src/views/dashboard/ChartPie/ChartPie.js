@@ -3,30 +3,32 @@
 import React from 'react'
 import { CChartPie } from '@coreui/react-chartjs'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react'
+// import {Chart} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+// Chart.register(ChartDataLabels);
 
 const ChartPie = ({ title, data, labels}) => {
-  var options = {
-    tooltips: {
-      enabled: false,
-    },
-    plugins: {
-      // Change options for ALL labels of THIS CHART
-      datalabels: [{
-      }]
-    },
-  };
-//   const percentage = (index) => {
-//     const varTotal = data.carriers.map((test) => test.count)
-//     console.log(varTotal)
-//     const total = varTotal.reduce((previousValue, currentValue) => previousValue + currentValue)
-//     return `(${((((Number(total[index]) / total) || 0) * 100).toFixed(2)).toString()}%)`
-//   }
+
+  // const options = {
+  //   tooltip: {
+  //     enabled: false
+  //   },
+  //   plugins: {
+  //     datalabels: {
+  //       display: function(context) {
+  //         console.log(context)
+  //       },
+  //     }
+  //   },
+  // };
+
   return (
       <CCard className="mb-4">
         <CCardHeader>{title}</CCardHeader>
         <CCardBody>
           <CChartPie
             data={{
+              plugins: [ChartDataLabels],
               labels: labels ,
               datasets: [
                 {
@@ -36,9 +38,17 @@ const ChartPie = ({ title, data, labels}) => {
                   borderColor: 'white'
                 },
               ],
-
             }}
-            options={options}
+            options={{
+              plugins: {
+                datalabels: {
+                  display: function(context) {
+                    console.log(context)
+                    console.log("skjdhksdhfd")
+                  },
+                }
+              }
+            }}
           />
         </CCardBody>
       </CCard>

@@ -1,17 +1,21 @@
-import 'react-app-polyfill/stable'
-import 'core-js'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import * as serviceWorker from './serviceWorker'
-import { Provider } from 'react-redux'
-import store from './store'
+/* eslint-disable prettier/prettier */
+import "react-app-polyfill/stable"
+import "core-js"
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import * as serviceWorker from "./serviceWorker"
+import { Provider } from "react-redux"
+import store from "./store"
+import AuthProvider from "./contexts/AuthProvider"
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById("root"),
 )
 
 // If you want your app to work offline and load faster, you can change

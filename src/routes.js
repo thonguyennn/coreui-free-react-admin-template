@@ -2,6 +2,7 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const ViewCall = React.lazy(() => import('./views/viewCall/Dashboard'))
 
 const CreateAction = React.lazy(() => import('./views/actions/CreateAction'))
 const Actions = React.lazy(() => import('./views/actions/Actions'))
@@ -27,6 +28,7 @@ const Test = React.lazy(() => import('./views/test/Test'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/viewCall/:id', exact: true, name: 'View', component: ViewCall },
 
   { path: '/actions/create', exact: true, name: 'Create', component: CreateAction },
   { path: '/actions/:id', exact: true, name: 'Details', component: Action },
